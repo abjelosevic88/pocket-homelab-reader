@@ -1,0 +1,5 @@
+# Pocket Reader behind Caddy. Homepage widgets and linked apps send their own
+# bearer token to /api/*.
+reader.example.com {
+	reverse_proxy pocket-reader:8080
+}

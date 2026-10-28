@@ -1,0 +1,23 @@
+[Unit]
+Description=Pocket Reader — feeds and read later
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+User=pocket-reader
+Group=pocket-reader
+ExecStart=/usr/local/bin/pocket-reader
+Environment=DATA_DIR=/var/lib/pocket-reader
+Environment=PORT=8080
+Environment=BASE_URL=https://reader.example.com
+Environment=SECURE_COOKIES=true
+Restart=on-failure
+RestartSec=3
+NoNewPrivileges=true
+ProtectSystem=strict
+ProtectHome=true
+ReadWritePaths=/var/lib/pocket-reader
+PrivateTmp=true
+
+[Install]
+WantedBy=multi-user.target
