@@ -25,7 +25,6 @@
 .feed-ico.yt { color: #e11d48; }
 .feed-ico.img { object-fit: contain; background: transparent; }
 .link-btn { display: inline-flex; align-items: center; gap: 4px; background: none; border: 0; padding: 0; color: var(--accent-ink); cursor: pointer; font: inherit; }
-.link-btn:hover { text-decoration: underline; }
 
 /* ---- sidebar: feeds and folders ---- */
 .sb-feeds { min-height: 0; }
@@ -103,7 +102,6 @@
 .reader-site .link-btn { color: var(--rmuted); font-weight: 550; }
 .reader-title { font-family: var(--serif); font-size: clamp(26px, 3.4vw, 36px); line-height: 1.18; letter-spacing: -.015em; font-weight: 700; margin: 0 0 12px; }
 .reader-title a { color: inherit; text-decoration: none; }
-.reader-title a:hover { text-decoration: underline; text-decoration-thickness: 1px; text-underline-offset: 4px; }
 .reader-meta { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 12px; }
 .reader-callout { margin-bottom: 20px; align-items: center; }
 .reader-audio, .reader-video { width: 100%; margin-bottom: 18px; border-radius: 10px; }
@@ -214,7 +212,6 @@ mark.hl-pink, .sel-dot.hl-pink { background: var(--hl-pink); }
 .feed-group-head + .feed-row { border-top: 0; }
 .feed-row.off { opacity: .6; }
 .feed-name { font-weight: 600; color: var(--text); text-decoration: none; }
-.feed-name:hover { text-decoration: underline; }
 .feed-switch { display: inline-flex; align-items: center; gap: 6px; }
 .feed-empty { padding: 10px 14px; }
 .rule-list { border: 1px solid var(--border); border-radius: var(--radius-lg); background: var(--surface); }
@@ -232,7 +229,6 @@ mark.hl-pink, .sel-dot.hl-pink { background: var(--hl-pink); }
 .hl-groups { display: grid; gap: 26px; }
 .hl-group-head { display: flex; flex-direction: column; gap: 2px; }
 .hl-group-title { font-weight: 650; font-size: 16px; color: var(--text); text-decoration: none; line-height: 1.35; }
-.hl-group-title:hover { text-decoration: underline; }
 
 /* ---- catch up ---- */
 .catchup p { line-height: 1.6; margin: 0 0 12px; }
