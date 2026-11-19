@@ -131,6 +131,7 @@ func (s *Server) Router() http.Handler {
 			r.Get("/export.opml", s.handleExportOPML)
 			r.Post("/import", s.handleImport)
 			r.Post("/import/opml", s.handleImportOPMLText)
+			r.Get("/pocket/portable", portable.Handler())
 		})
 	})
 

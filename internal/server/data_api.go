@@ -212,7 +212,8 @@ func (s *Server) handleImport(w http.ResponseWriter, r *http.Request) {
 	var body []byte
 	var err error
 	if strings.HasPrefix(r.Header.Get("Content-Type"), "multipart/") {
-		if err := r.ParseMultipartForm(s.cfg.MaxBodyBytes); err != nil {
+		r.Body = http.MaxBytesReader(w, r.Body, s.cfg.MaxBodyBytes+1<<20)
+		if err := r.ParseMultipartForm(32 << 20); err != nil {
 			writeErr(w, http.StatusBadRequest, "that file is too large")
 			return
 		}
@@ -259,7 +260,19 @@ func (s *Server) handleImport(w http.ResponseWriter, r *http.Request) {
 		defer cancel()
 		s.extractPending(c)
 	}()
-	writeJSON(w, http.StatusOK, map[string]any{"kind": kind, "counts": counts})
+	writeJSON(w, http.StatusOK, importResult(map[string]any{"kind": kind}, counts))
+}
+
+// importResult answers an import with its counts, nested (for the page) and
+// at the top level (what Pocket Move shows).
+func importResult(out map[string]any, counts map[string]int) map[string]any {
+	out["counts"] = counts
+	for k, v := range counts {
+		if _, taken := out[k]; !taken {
+			out[k] = v
+		}
+	}
+	return out
 }
 
 func sniffImport(b []byte) string {
@@ -607,5 +620,5 @@ func (s *Server) handleImportOPMLText(w http.ResponseWriter, r *http.Request) {
 		writeErr(w, http.StatusBadRequest, err.Error())
 		return
 	}
-	writeJSON(w, http.StatusOK, map[string]any{"kind": "opml", "counts": counts, "summary": fmt.Sprintf("%s added, %d already followed", plural(counts["feeds"], "feed", "feeds"), counts["already"])})
+	writeJSON(w, http.StatusOK, importResult(map[string]any{"kind": "opml", "summary": fmt.Sprintf("%s added, %d already followed", plural(counts["feeds"], "feed", "feeds"), counts["already"])}, counts))
 }

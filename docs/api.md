@@ -47,7 +47,9 @@ JSON over HTTP under `/api/v1`. Authenticate with the session cookie, a personal
 
 ## Data
 
-`GET /export.json` (feeds, folders, kept articles with text, highlights, rules), `GET /export.opml`, `GET /export.csv`, `POST /import` (multipart `file` or raw body; OPML, a Pocket Reader or Karakeep export, Netscape bookmarks HTML or a CSV with a `url` column — recognised by itself, `?kind=` to force), `GET /backup` (admins, the whole SQLite file).
+`GET /export.json` (feeds, folders, kept articles with text, highlights, rules), `GET /export.opml`, `GET /export.csv`, `POST /import` (multipart `file` or raw body; OPML, a Pocket Reader or Karakeep export, Netscape bookmarks HTML or a CSV with a `url` column — recognised by itself, `?kind=` to force; the counts come back both under `counts` and at the top level), `POST /import/opml` (the OPML as the raw body), `GET /backup` (admins, the whole SQLite file). Imports only add; a second run of the same file adds nothing.
+
+`GET /pocket/portable` describes these for Pocket Move: exports under the link scope `move:export`, imports under `move:import`.
 
 ## Google Reader API
 

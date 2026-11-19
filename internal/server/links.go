@@ -21,6 +21,21 @@ var linkOffers = []core.Offer{
 	{Scope: "reading:write", Name: "Save to read later", Description: "Put pages on your read-later list (a link copied in another app, a page from a project) and follow feeds. It may remove only what it saved itself."},
 }
 
+// portable is what Pocket Move may copy out and bring in for a person
+// (docs/move.md in pocket-homelab-core); Register adds move:export/import.
+var portable = &core.Portable{
+	Exports: []core.PortableExport{
+		{Path: "/api/v1/export.json", File: "reader.json", Kind: core.KindPocket, Title: "Your feeds and folders, every page you kept with its text, your highlights and rules"},
+		{Path: "/api/v1/export.opml", File: "feeds.opml", Kind: core.KindOPMLFeeds, Title: "The feeds you follow, in their folders, as OPML for any feed reader"},
+		{Path: "/api/v1/export.csv", File: "saved.csv", Kind: core.KindCSV, Title: "Your read-later list and archive as a table"},
+		{Path: "/api/v1/highlights/export.md", File: "highlights.md", Kind: core.KindMarkdown, Title: "Your highlights and notes, article by article"},
+	},
+	Imports: []core.PortableImport{
+		{Path: "/api/v1/import", Kind: core.KindPocket, Form: "file", Title: "Adds the feeds, kept pages, highlights and rules from another box; what you already have is left alone"},
+		{Path: "/api/v1/import/opml", Kind: core.KindOPMLFeeds, ContentType: "text/x-opml", Title: "Follows every feed in the OPML file, in its folder; feeds you already follow are skipped"},
+	},
+}
+
 type linkRoute struct {
 	methods string
 	path    *regexp.Regexp
@@ -40,6 +55,9 @@ var errLinkScope = errors.New("outside the link's scope")
 
 // linkAllows reports whether a link token with these scopes may make this request.
 func linkAllows(scopes []string, r *http.Request) bool {
+	if portable.LinkAllows(scopes, r) {
+		return true
+	}
 	for _, lr := range linkRoutes {
 		if !strings.Contains(" "+lr.methods+" ", " "+r.Method+" ") || !lr.path.MatchString(r.URL.Path) {
 			continue
