@@ -71,7 +71,7 @@ or `docker compose up -d` with [docker-compose.yml](docker-compose.yml). Open it
 
 ## With Pocket Core
 
-Set `CORE_URL` and `CORE_REGISTRATION_KEY` and Reader joins the box: people sign in with Pocket Core, highlights go to each person's own Pocket Notes through an app link (nothing to paste), and summaries come from Pocket AI. Other Pocket apps can read what you read (`reading:read`: Pocket Day's journal) or save pages here (`reading:write`: a link from Pocket Clips); an app may remove only what it saved. Events on the bus: `reader.saved`, `reader.finished`, `reader.highlighted`, `reader.subscribed`. Without Core the Notes connection can be made directly with a URL and a token; the Core-only choices stay visible, greyed out.
+Set `CORE_URL` and `CORE_REGISTRATION_KEY` and Reader joins the box: people sign in with Pocket Core, highlights go to each person's own Pocket Notes through an app link (nothing to paste), and summaries come from Pocket AI. Other Pocket apps can read what you read (`reading:read`: Pocket Day's journal) or save pages here (`reading:write`: a link from Pocket Clips); an app may remove only what it saved. Pocket Search finds your articles (`!reader`, `!read`), Pocket Day writes what you saved, read and finished into your journal, and Pocket Hub shows your read-later list and saves a web address you type there, each through its own link (`pocket:search`, `pocket:day`, `pocket:widget`, `pocket:capture`) with nothing to set up in those apps. Events on the bus: `reader.saved`, `reader.finished`, `reader.highlighted`, `reader.subscribed`. Without Core the Notes connection can be made directly with a URL and a token; the Core-only choices stay visible, greyed out.
 
 ## Develop
 

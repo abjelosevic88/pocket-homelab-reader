@@ -243,12 +243,14 @@ func (s *Server) registerWithCore(ctx context.Context) error {
 	m := core.Manifest{
 		Slug: "reader", Name: "Pocket Reader",
 		Description: "Your feeds and your read-later list in one calm place: follow websites, blogs and YouTube channels, save any page to read later as a clean article, highlight passages and send them to your notes, search everything you read, and let AI summarise a post or catch you up. Works with RSS phone apps (Google Reader API).",
-		Icon:        "/favicon.svg", Version: Version,
+		Icon:        "/favicon.svg", Category: "Media", Version: Version,
 		URL: s.cfg.CoreAppURL, PublicURL: s.cfg.BaseURL, HealthPath: "/healthz", EnvPrefix: "READER",
 		Publishes: eventTopics,
 		Offers:    linkOffers,
 		Uses:      append(linkUses(), core.InferenceUse()),
 		Portable:  portable,
+
+		Capabilities: capabilities,
 	}
 	if s.cfg.BaseURL != "" {
 		m.OIDC = &core.OIDCRequest{RedirectURIs: []string{s.oidcCallbackURL()}}

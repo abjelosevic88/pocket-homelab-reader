@@ -132,6 +132,12 @@ func (s *Server) Router() http.Handler {
 			r.Post("/import", s.handleImport)
 			r.Post("/import/opml", s.handleImportOPMLText)
 			r.Get("/pocket/portable", portable.Handler())
+
+			// what Pocket Search, Day and Hub ask every app (capabilities.go)
+			r.Get("/pocket/search", core.SearchHandler(s.pocketSearch))
+			r.Get("/pocket/day/{date}", core.DayHandler(s.pocketDay))
+			r.Get("/pocket/widget", core.WidgetHandler(s.pocketWidget))
+			r.Post("/pocket/capture", capabilities.Capture.CaptureHandler(s.pocketCapture))
 		})
 	})
 

@@ -14,7 +14,7 @@ import (
 // Pocket Core app links (docs/links.md in pocket-homelab-core), Reader as the
 // target: another Pocket app the person allowed in Core may act here for
 // them with a pcx_ token, only within these scopes. Every route not listed
-// in linkRoutes stays closed to it (403).
+// in linkRoutes, portable or capabilities stays closed to it (403).
 
 var linkOffers = []core.Offer{
 	{Scope: "reading:read", Name: "See what you read", Description: "Read what you read, saved and highlighted (a day at a time for your journal), your read-later list and your feeds — for your journal, notes and dashboards. Never your own notes on articles."},
@@ -36,6 +36,19 @@ var portable = &core.Portable{
 	},
 }
 
+// capabilities are what Pocket Search, Pocket Day and Pocket Hub may ask
+// Reader (docs/capabilities.md in pocket-homelab-core); Register adds the
+// pocket:* offers. The routes are in capabilities.go.
+var capabilities = core.Capabilities{
+	Search: &core.Searchable{What: "The pages you saved and the posts from your feeds, by title and text",
+		Kinds: []string{"article"}, Bangs: []string{"reader", "read"}},
+	Day: &core.DayFeed{Label: "Reader", One: "article", Many: "articles", Unit: "count",
+		What: "The articles you saved, read or finished that day"},
+	Widget: &core.Widget{Title: "Read later", What: "How many articles wait on your read-later list, and the ones you saved last"},
+	Capture: &core.QuickCapture{Kinds: []core.CaptureKind{{Kind: "article", Label: "Article",
+		What: "A web address saved to your read-later list; any other words become your note on it", Fields: []string{"title"}}}},
+}
+
 type linkRoute struct {
 	methods string
 	path    *regexp.Regexp
@@ -55,7 +68,7 @@ var errLinkScope = errors.New("outside the link's scope")
 
 // linkAllows reports whether a link token with these scopes may make this request.
 func linkAllows(scopes []string, r *http.Request) bool {
-	if portable.LinkAllows(scopes, r) {
+	if portable.LinkAllows(scopes, r) || capabilities.LinkAllows(scopes, r) {
 		return true
 	}
 	for _, lr := range linkRoutes {
